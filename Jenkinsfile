@@ -5,7 +5,8 @@ pipeline {
             steps {
                timeout(time: 3, unit: 'MINUTES') {
                     retry(5) {
-                        sh './flakey-deploy.sh'
+                        //sh './flakey-deploy.sh'
+                        // sth that will fail
                     }
                 }
                 sh 'echo "Hello World"'
