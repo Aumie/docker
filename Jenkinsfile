@@ -3,13 +3,14 @@ pipeline {
     stages {
         stage('try') {
             steps {
-                sh 'echo "Hello World"'
-                sh '''
+                
+                retry(3) {
+                    sh './flakey-deploy.sh'
+                    sh 'echo "Hello World"'
+                    sh '''
                     echo "Multiline shell steps works too"
                     ls -lah
                 '''
-                retry(3) {
-                    sh './flakey-deploy.sh'
                 }
 
                 timeout(time: 3, unit: 'MINUTES') {
@@ -19,9 +20,11 @@ pipeline {
         }
         stage('build') {
             steps {
-                sh 'python --version'
+                
                 retry(3) {
                     sh './flakey-deploy.sh'
+                    sh 'python --version'
+                    
                 }
 
                 timeout(time: 3, unit: 'MINUTES') {
